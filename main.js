@@ -1,6 +1,7 @@
 import http from "node:http";
 import urlParser from "node:url"
-import { shorten, getOriginalLink } from "./shortener.js"
+import { shorten } from "./shortener.js"
+import { getOriginalLink } from "./services.js";
 
 const API = "http://localhost:3000/"
 
