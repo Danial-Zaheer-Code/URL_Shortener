@@ -1,9 +1,11 @@
+import dotenv from "dotenv"
+dotenv.config();
+
 import http from "node:http";
 import urlParser from "node:url"
 import { shorten } from "./shortener.js"
 import { getOriginalLink } from "./services.js";
 
-const API = "http://localhost:3000/"
 
 function getPathName(url) {
   const parsedUrl = urlParser.parse(url, true);
@@ -52,11 +54,11 @@ const server = http.createServer((req, res) => {
       const newUrl = shorten(body.url);
 
       res.writeHead(200, { "content-type": "text/plain" });
-      return res.end(`${API}${newUrl}`);
+      return res.end(`${process.env.API}${newUrl}`);
     })
   }
 });
 
-server.listen(3000, () => {
+server.listen(process.env.PORT, () => {
   console.log('Server is running on http://localhost:3000');
 });
