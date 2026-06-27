@@ -13,7 +13,7 @@ function getPathName(url) {
   return parsedUrl.pathname;
 }
 
-const server = http.createServer((req, res) => {
+const server = http.createServer(async (req, res) => {
   try {
     if (req.method != "POST" && req.method != "GET") {
       res.writeHead(405, { "content-type": "text/plain" });
@@ -38,21 +38,22 @@ const server = http.createServer((req, res) => {
       let body = "";
       req.on("data", chunk => {
         body += chunk.toString();
-      }).on('end', () => {
+      }).on('end', async () => {
         try {
           body = JSON.parse(body);
         }
-        catch (eror) {
+        catch (error) {
+          console.log(error);
           res.writeHead(400, { 'content-type': 'text/plain' });
           return res.end('Wrong JSON Payload');
         }
 
-        if (body == '') {
+        if (body.url == '') {
           res.writeHead(400, { "content-type": "text/plain" });
           return res.end("URL field must not be empty");
         }
 
-        const newUrl = shorten(body.url);
+        const newUrl = await shorten(body.url);
 
         res.writeHead(200, { "content-type": "text/plain" });
         return res.end(`${process.env.API}${newUrl}`);
