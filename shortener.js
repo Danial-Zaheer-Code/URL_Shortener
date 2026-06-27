@@ -16,10 +16,10 @@ function convertToBase62(num){
     return res;
 }
 
-export function shorten(url){
-    let id = createRow(url);
-    let res = convertToBase62(id);    
-    updateBase62(id, res);
+export async function shorten(url){
+    let id = await createRow(url);
+    let shortened_url = convertToBase62(id);    
+    await updateBase62(id, shortened_url);
 
-    return res;
+    return shortened_url;
 }

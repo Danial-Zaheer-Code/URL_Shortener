@@ -21,7 +21,11 @@ export async function updateBase62(id, shortened_url){
         UPDATE url_mapper
         SET shortened_url = $1
         WHERE id = $2
-    `,[shortened_url,id]); 
+    `,[shortened_url,id]);
+
+    if(result.rowCount <= 0){
+        throw new Error("Setting shortened_url failed.");
+    }
 }
 
 export async function getOriginalLink(shortened_url){
@@ -29,5 +33,5 @@ export async function getOriginalLink(shortened_url){
         SELECT url FROM url_mapper WHERE shortened_url = $1
     `,[shortened_url]);
     
-    return rows;
+    return rows.length == 1 ? rows[0].url : null;
 }
