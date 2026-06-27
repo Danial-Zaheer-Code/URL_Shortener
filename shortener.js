@@ -20,6 +20,5 @@ export async function shorten(url){
     let id = await createRow(url);
     let shortened_url = convertToBase62(id);    
     await updateBase62(id, shortened_url);
-    console.log(shortened_url);
     return shortened_url;
 }
