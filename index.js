@@ -53,6 +53,11 @@ const server = http.createServer(async (req, res) => {
           return res.end("URL field must not be empty");
         }
 
+        if(!URL.canParse(body.url)){
+          res.writeHead(400, {"content-type": "text/plain"});
+          return res.end("Not a valid url");
+        }
+
         const newUrl = await shorten(body.url);
 
         res.writeHead(200, { "content-type": "text/plain" });
